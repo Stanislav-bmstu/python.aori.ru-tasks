@@ -123,7 +123,7 @@ def output_file(file_name, set_of_articles):
 def find_articles(query, articles_list):
     filtered_articles = []
     for article in articles_list:
-        if article['title'].encode('utf-8').find(query) != -1:
+        if query in article['title'].encode('utf-8'):
             filtered_articles.append(article)
     return filtered_articles
 
