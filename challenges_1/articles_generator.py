@@ -44,16 +44,35 @@ def generate_article(themes):
 #   Нужно при помощи этих функций сгенерировать 100 статей для блога (см. задачу 6 практикума на лекции 1). 
 #   На выходе - файл articles.json с сотней статей (у статьи должны быть поля title, text, author).
 #   Статьи должны генерироваться при выполнении команды python articles_generator.py
-def generate_a_hundred():
+def generate_full_articles(number_of_articles=10, number_of_themes=2):
+    if number_of_articles < 1:
+        print u'Установлено минимальное значение колличества статей = 1'
+        number_of_articles = 1
+    elif number_of_articles > 100:
+        print u'Установлено максимальное значение колличества статей = 100'
+        number_of_articles = 100
+
+    if number_of_themes < 2:
+        print u'Установлено минимальное значение number_of_themes = 2'
+        number_of_themes = 2
+    elif number_of_themes > 10:
+        print u'Установлено максимальное значение number_of_themes = 10'
+        number_of_themes = 10
+
     my_articles = []
     i = 0
-    while i < 100:
+    while i < number_of_articles:
         i += 1
-        random_theme1 = AVAILABLE_ARTICLE_THEMES[random.randint(0, 15)]
-        random_theme2 = AVAILABLE_ARTICLE_THEMES[random.randint(0, 15)]
+
+        random_themes = []
+        j = 0
+        while j < number_of_themes:
+            j += 1
+            random_themes.append(random.choice(AVAILABLE_ARTICLE_THEMES))
+
         my_articles.append({
             'title': generate_title(),
-            'text': generate_article([random_theme1, random_theme2]),
+            'text': generate_article(random_themes),
             'author': 'Superman'
         })
     json.dump(my_articles, open('articles.json', 'w'))
@@ -67,18 +86,33 @@ def generate_a_hundred():
 def output_articles(output_type, page_number, articles_number):
     assert page_number >= 1
     articles = json.load(open('articles.json', 'r'))
-    start = (page_number - 1) * articles_number
-    end = start + articles_number
-    filtered_articles = articles[start:end]
+
+    first_article_index = (page_number - 1) * articles_number
+    last_article_index = first_article_index + articles_number
+    if first_article_index > len(articles):
+        print "В данном диапазоне нет статей"
+        return
+    elif last_article_index > len(articles):
+        last_article_index = len(articles)
+    filtered_articles = articles[first_article_index:last_article_index]
+
     if output_type == 'console':
-        for article in filtered_articles:
-            print '%s\n\n%s\n\n%s(c)\n_______\n' % (article[u'title'], article[u'text'], article[u'author'])
+        output_console(filtered_articles)
     else:
-        with open(output_type + '.html', 'w') as f:
-            for article in filtered_articles:
-                string = '<h1>%s</h1>\n<div>%s</div>\n' \
-                         % (article['title'].encode('utf-8'), article['text'].encode('utf-8'))
-                f.write(string)
+        output_file(output_type, filtered_articles)
+
+
+def output_console(set_of_articles):
+    for article in set_of_articles:
+        print '%s\n\n%s\n\n%s(c)\n_______\n' % (article[u'title'], article[u'text'], article[u'author'])
+
+
+def output_file(file_name, set_of_articles):
+    with open(file_name + '.html', 'w') as f:
+        for article in set_of_articles:
+            string = '<h1>%s</h1>\n<div>%s</div>\n' \
+                     % (article['title'].encode('utf-8'), article['text'].encode('utf-8'))
+            f.write(string)
 
 
 # 3. Поиск по статьям
@@ -102,11 +136,15 @@ if __name__ == "__main__":
 
     # YOUR CODE HERE
 
-    generate_a_hundred()
+    generate_full_articles(24, 12)
+    print '**************************************************************'
+
     output_articles('console', 4, 3)
-    output_articles('paginated_articles', 4, 3)
+    print '**************************************************************'
+
+    output_articles('paginated_articles', 41, 3)
+    print '**************************************************************'
 
     articles = find_articles('ика', json.load(open('articles.json', 'r')))
-    print '**************************************************************'
     for article in articles:
-            print '%s\n\n%s\n\n%s(c)\n_______\n' % (article[u'title'], article[u'text'], article[u'author'])
+        print '%s\n\n%s\n\n%s(c)\n_______\n' % (article[u'title'], article[u'text'], article[u'author'])
