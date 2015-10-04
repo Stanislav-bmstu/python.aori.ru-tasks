@@ -16,10 +16,7 @@ credentials = {
 #	Реализовать функцию is_auth_successful, которая возвращает True или False в зависимости от того, 
 #	верно ли введён пользователь и пароль.
 def is_auth_successful(login, password):
-    if credentials[login] == hashlib.sha224(password).hexdigest():
-        return True
-    else:
-        return False
+    return credentials[login] == hashlib.sha224(password).hexdigest()
 
 
 if __name__ == "__main__":

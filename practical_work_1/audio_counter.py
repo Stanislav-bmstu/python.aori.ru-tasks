@@ -24,7 +24,7 @@ def print_all(audios):
         print '%s - %s' % (audio['artist'], audio['title'])
 
 
-#   3. Count audios
+# 3. Count audios
 #
 #   В файл audio_counter.py добавить функцию count_artists.
 #   Функция принимает на вход список аудио (тех самых, из предыдущей задачи).
@@ -32,7 +32,7 @@ def print_all(audios):
 #   Запустить функцию, вывести результат в консоль.
 def count_artists(audios, artist_name):
     a = [audio for audio in audios if audio['artist'] == artist_name]
-    return {'artist': artist_name, 'number': len(a)}
+    return len(a)
 
 
 #   4. Testing count audios
@@ -43,17 +43,29 @@ def count_artists(audios, artist_name):
 #   Функция должна возвращать True или False в зависимости от того, верно работает функция или нет.
 def test_count_artist(audios):
     a = count_artists(audios, u"Шуфутинский")
-    if a['number'] != 1: return False
+    if a != 1:
+        return False
+
     a = count_artists(audios, u"Чайковский")
-    if a['number'] != 1: return False
+    if a != 1:
+        return False
+
     a = count_artists(audios, u"ILWT")
-    if a['number'] != 2: return False
+    if a != 2:
+        return False
+
     a = count_artists(audios, u"Стас Михайлов")
-    if a['number'] != 3: return False
+    if a != 3:
+        return False
+
     a = count_artists(audios, u"Madrugada")
-    if a['number'] != 1: return False
+    if a != 1:
+        return False
+
     a = count_artists(audios, u"Tropkillaz")
-    if a['number'] != 1: return False
+    if a != 1:
+        return False
+
     return True
 
 
