@@ -10,7 +10,7 @@ import json
 from operator import itemgetter
 
 
-def research():
+def get_top_regions(number_of_top_regions=5):
     areas = {}
     all_info = json.load(open('technical_education_moscow.json', 'r'))
     for info in all_info:
@@ -24,12 +24,18 @@ def research():
         districts.append({'area': area, 'number': areas.get(area)})
 
     districts = sorted(districts, key=itemgetter('number'), reverse=True)
+    if number_of_top_regions > len(districts):
+        number_of_top_regions = len(districts)
+    elif number_of_top_regions < 1:
+        number_of_top_regions = 1
 
-    i = 0
-    while i < 5:
-        print districts[i].get('area') + " : " + str(districts[i].get('number'))
-        i += 1
+    output_regions(districts, number_of_top_regions)
+
+
+def output_regions(regions, number):
+    for i in xrange(number):
+        print regions[i].get('area') + " : " + str(regions[i].get('number'))
 
 
 if __name__ == "__main__":
-    research()
+    get_top_regions(5)

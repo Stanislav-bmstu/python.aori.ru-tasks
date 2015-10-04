@@ -7,16 +7,19 @@
 
 
 def validate(password):
+    is_number = False
     is_uppercase = False
     is_lowercase = False
     if len(password) < 8:
         return False
     for token in password:
-        if token.islower():
+        if token.isdigit():
+            is_number = True
+        elif token.islower():
             is_lowercase = True
         elif token.isupper():
             is_uppercase = True
-        if is_lowercase & is_uppercase:
+        if is_lowercase & is_uppercase & is_number:
             return True
     return False
 

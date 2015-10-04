@@ -27,13 +27,15 @@ def sort_files(path):
     for file_data in only_files_data:
         tokens = file_data.split(' ')
         tokens = [token for token in tokens if token]
-        files.append({'name': tokens[8], 'size': int(tokens[4])})
+        file_name = tokens[8]
+        for token in tokens[9:]:
+            file_name += ' ' + token
+        files.append({'name': file_name, 'size': int(tokens[4])})
 
     files = sorted(files, key=itemgetter('size'), reverse=True)
 
     sorted_files = []
     for file in files:
-        print(file)
         sorted_files.append(file['name'])
 
     return sorted_files
