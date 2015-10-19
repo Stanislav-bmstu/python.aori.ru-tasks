@@ -1,7 +1,7 @@
 .idea/
 *.json
 *.html
+practical_work_2/text.txt
 *.pyc
-*.txt
 *.csv
 */venv/
