@@ -3,3 +3,5 @@
 *.html
 *.pyc
 *.txt
+*.csv
+*/venv/
